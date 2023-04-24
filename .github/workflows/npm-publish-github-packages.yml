@@ -1,11 +1,7 @@
 # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
 # For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
 
-name: Node.js Package
-
-on:
-  release:
-    types: [created]
+name: Build and Publish
 
 inputs:
   name:
@@ -20,6 +16,11 @@ inputs:
     description: "Duration after which artifact will expire in days."
     required: false
     default: "1"
+
+on:
+  release:
+    types: [created]
+
 
 jobs:
   build:
@@ -43,10 +44,6 @@ jobs:
         export NODE_ENV=production
         npx webpack
 
-
-runs:
-  using: composite
-  steps:
     - name: Archive artifact
       shell: sh
       if: runner.os == 'Linux'

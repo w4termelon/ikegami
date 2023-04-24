@@ -24,6 +24,7 @@ const _state = () => ({
   job_icons: 'default',
   cell_background: 'translucent',
   blur_name: false,
+  maxCombatants: 8,
   // appearance: layout
   list_order: 'asc',
   list_align: 'center',
@@ -47,16 +48,16 @@ export default {
       Vue.set(state, k, v)
     },
     toggle(state, k) {
-      if(typeof state[k] === 'boolean') {
+      if (typeof state[k] === 'boolean') {
         state[k] = !state[k]
       }
     },
-    setName(state, [ uid, username ]) {
+    setName(state, [uid, username]) {
       state.uid = uid
       state.username = username
     },
     updateName(state, { index, name }) {
-      if(name.trim() === '') {
+      if (name.trim() === '') {
         state.username_configured.splice(index, 1)
       } else {
         Vue.set(state.username_configured, index, name)
@@ -65,14 +66,14 @@ export default {
     migrate(state) {
       // const defaults = _state()
 
-      if(state.version < 1 || state.version == null) {
+      if (state.version < 1 || state.version == null) {
         delete state.show_critbar
       }
-      if(state.version < 2 || state.version == null) {
-        if(state.cell_display1 === 'critcounts_wo_directs') {
+      if (state.version < 2 || state.version == null) {
+        if (state.cell_display1 === 'critcounts_wo_directs') {
           state.cell_display1 = 'critcounts'
         }
-        if(state.cell_display2 === 'critcounts_wo_directs') {
+        if (state.cell_display2 === 'critcounts_wo_directs') {
           state.cell_display2 = 'critcounts'
         }
       }
@@ -82,7 +83,7 @@ export default {
   },
   getters: {
     usernames(state) {
-      if(state.username_configured.length) {
+      if (state.username_configured.length) {
         return [state.username].concat(state.username_configured)
       } else {
         return [state.username]

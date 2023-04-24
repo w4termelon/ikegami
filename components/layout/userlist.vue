@@ -1,12 +1,7 @@
 <template>
   <div class="c-parts-userlist">
     <ul>
-      <cell
-        v-for="c in combatants"
-        :combatant="c"
-        :topdps="topdps"
-        :tophps="tophps"
-        :key="c.name">
+      <cell v-for="c in combatants" :combatant="c" :topdps="topdps" :tophps="tophps" :key="c.name">
         <detailed-view :c="c" :e="encounter" />
       </cell>
     </ul>
@@ -31,15 +26,15 @@ export default {
       'tophps',
       'encounter'
     ]),
-    ...mapState('settings', [ 'list_order' ]),
+    ...mapState('settings', ['list_order', 'maxCombatants']),
     combatants() {
       const l = this.$store.state.encounter.combatants || []
 
-      if(this.list_order === 'desc') {
+      if (this.list_order === 'desc') {
         // assuming worst case of combatant count: 124px * 75% * 32 = 2976px
-        return this.$store.state.encounter.combatants.slice(-32).reverse()
+        return this.$store.state.encounter.combatants.slice(maxCombatants * -1).reverse()
       } else {
-        return this.$store.state.encounter.combatants.slice(0, 32)
+        return this.$store.state.encounter.combatants.slice(0, this.maxCombatants)
       }
     }
   }

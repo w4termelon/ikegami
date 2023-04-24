@@ -36,6 +36,7 @@
     "webpack-dev-server": "^3.11.3"
   },
   "scripts": {
-    "dev": "NODE_ENV=development webpack-dev-server --host=0.0.0.0 --port=9000 --disable-host-check"
+    "dev": "NODE_ENV=development webpack-dev-server --host=0.0.0.0 --port=9000 --disable-host-check",
+    "devWin": "set NODE_ENV=development&&set NODE_OPTIONS=--openssl-legacy-provider&&webpack-dev-server --host=0.0.0.0 --port=9000 --disable-host-check"
   }
 }

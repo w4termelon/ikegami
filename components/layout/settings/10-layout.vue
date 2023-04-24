@@ -2,84 +2,49 @@
   <div class="tab-content">
     <dropdown label="Values">
       <div class="multiple-dropdown-wrap" slot="contents">
-        <dropdown-body
-          :selections="element_selections"
-          v-model="cell_display1" />
-        <dropdown-body
-          empty="None"
-          :selections="element_selections"
-          v-model="cell_display2" />
+        <dropdown-body :selections="element_selections" v-model="cell_display1" />
+        <dropdown-body empty="None" :selections="element_selections" v-model="cell_display2" />
       </div>
     </dropdown>
-    <radio-button
-      :class="[ 'equal-width', { disabled: hide_name }]"
-      mode="multiple"
-      label="Shortenize name as"
+    <radio-button :class="['equal-width', { disabled: hide_name }]" mode="multiple" label="Shortenize name as"
       :selections="new Map([
-        ['2', (shorten_name & 2)? 'F.' : 'Firstname'],
-        ['1', (shorten_name & 1)? 'L.' : 'Lastname']
-      ])"
-      :value="{
-        '2': +shorten_name & 2,
-        '1': +shorten_name & 1
-      }"
-      @input="v => shorten_name = +shorten_name ^ v" />
-    <radio-button
-      class="equal-width"
-      mode="multiple"
-      label="Nameplate"
-      :selections="{
-        hide_job_icon: 'Icon',
-        hide_name: 'Name'
-      }"
-      :value="{
-        hide_name: !hide_name,
-        hide_job_icon: !hide_job_icon
-      }"
-      @input="v => this[v] = !this[v]" />
-    <radio-button
-      class="equal-width"
-      label="Sort"
-      :selections="new Map([
-        [ 'asc', '▼' ],
-        [ 'desc', '▲' ]
-      ])"
-      v-model="list_order" />
-    <radio-button
-      class="equal-width"
-      label="Align"
-      :selections="new Map([
-        [ 'left', '←' ],
-        [ 'center', '◯' ],
-        [ 'right', '→' ]
-      ])"
-      v-model="list_align" />
+        ['2', (shorten_name & 2) ? 'F.' : 'Firstname'],
+        ['1', (shorten_name & 1) ? 'L.' : 'Lastname']
+      ])" :value="{
+  '2': +shorten_name & 2,
+  '1': +shorten_name & 1
+}" @input="v => shorten_name = +shorten_name ^ v" />
+    <radio-button class="equal-width" mode="multiple" label="Nameplate" :selections="{
+      hide_job_icon: 'Icon',
+      hide_name: 'Name'
+    }" :value="{
+  hide_name: !hide_name,
+  hide_job_icon: !hide_job_icon
+}" @input="v => this[v] = !this[v]" />
+    <radio-button class="equal-width" label="Sort" :selections="new Map([
+      ['asc', '▼'],
+      ['desc', '▲']
+    ])" v-model="list_order" />
+    <radio-button class="equal-width" label="Align" :selections="new Map([
+      ['left', '←'],
+      ['center', '◯'],
+      ['right', '→']
+    ])" v-model="list_align" />
     <group name="More">
-      <checkbox
-        label="Force singleline with short values"
-        v-model="force_inline_short_values" />
-      <checkbox
-        label="Less information on detailed view"
-        v-model="reduced" />
+      <checkbox label="Force singleline with short values" v-model="force_inline_short_values" />
+      <checkbox label="Less information on detailed view" v-model="reduced" />
+      <number label="Max Combatants" :min="1" :max="48" :step="1" :default="8" v-model="maxCombatants" />
     </group>
     <group name="Tickers">
       <figure class="tab-content-presentation w-settings-layout-preview">
-        <svg
-          width="372"
-          height="56"
-          viewBox="-96 -9 372 56"
-          style="width: 100%; height: 100%;"
+        <svg width="372" height="56" viewBox="-96 -9 372 56" style="width: 100%; height: 100%;"
           xmlns:xlink="http://www.w3.org/1999/xlink">
           <!-- warn: fill and stroke are inherited inside this element from CSS -->
           <defs stroke="none">
             <g id="whm-icon" x="0" y="0" width="36" height="36">
               <text x="16" y="32" font-family="FFXIVAppIcons" font-size="28" text-anchor="middle"> &#xf024; </text>
             </g>
-            <text
-              id="value1"
-              font-size="18"
-              :x="hide_job_icon || (cell_display2 && !hide_name)? 9 : 30"
-              y="24.5">
+            <text id="value1" font-size="18" :x="hide_job_icon || (cell_display2 && !hide_name) ? 9 : 30" y="24.5">
               {{ shortenized_name }}
             </text>
             <text id="value2" font-size="18" x="171" y="24.5" text-anchor="end"> 1234 </text>
@@ -98,7 +63,7 @@
               </g>
             </mask>
             <mask id="rest" x="0" y="0" width="180" height="36" mask-units="objectBoundingBox">
-              <rect x="100" y="0" width="180" height="36" fill="white"/>
+              <rect x="100" y="0" width="180" height="36" fill="white" />
             </mask>
           </defs>
 
@@ -120,16 +85,12 @@
               <use href="#content" font-weight="lighter" />
             </g>
             <!-- subtickers -->
-            <g
-              class="healer-pct"
-              :transform="`translate(0, ${preview_coords[tickers_healer_pct]})`">
+            <g class="healer-pct" :transform="`translate(0, ${preview_coords[tickers_healer_pct]})`">
               <rect x="0" y="0" width="15" height="3" class="piece p0" /> <!-- shielded -->
               <rect x="16" y="0" width="57" height="3" class="piece p1" /> <!-- total healed -->
               <rect x="74" y="0" width="12" height="3" class="piece p4" /> <!-- overheal -->
             </g>
-            <g
-              class="dps-crit"
-              :transform="`translate(0, ${preview_coords[tickers_dps_crit]})`">
+            <g class="dps-crit" :transform="`translate(0, ${preview_coords[tickers_dps_crit]})`">
               <rect x="61" y="0" width="56" height="3" class="piece p1" /> <!-- dh -->
               <rect x="118" y="0" width="51" height="3" class="piece p2" /> <!-- ch -->
               <rect x="170" y="0" width="10" height="3" class="piece p3" /> <!-- cdh -->
@@ -137,10 +98,7 @@
             <!-- legend -->
             <g font-size="12" fill-opacity="0.5">
               <!-- left -->
-              <g
-                v-if="tickers_dps_crit"
-                class="dps-crit"
-                transform="translate(-86, -4)">
+              <g v-if="tickers_dps_crit" class="dps-crit" transform="translate(-86, -4)">
                 <g transform="translate(0, 0)">
                   <rect width="4" height="14" class="piece p1" />
                   <text x="8" y="11.3"> direct </text>
@@ -154,11 +112,7 @@
                   <text x="8" y="11.3"> crit direct </text>
                 </g>
               </g>
-              <g
-                v-if="tickers_healer_pct"
-                class="healer-pct"
-                text-anchor="end"
-                transform="translate(262, -4)">
+              <g v-if="tickers_healer_pct" class="healer-pct" text-anchor="end" transform="translate(262, -4)">
                 <g transform="translate(0, 0)">
                   <rect width="4" height="14" class="piece p0" />
                   <text x="-4" y="11.3"> shielded </text>
@@ -186,21 +140,11 @@
           </g>
         </svg>
       </figure>
-      <radio-button
-        :class="[ 'equal-width' ]"
-        label="Critical hits"
-        :selections="ticker_selections"
-        :value="tickers_dps_crit"
-        @input="updateTickerOption('tickers_dps_crit', $event)" />
-      <radio-button
-        :class="[ 'equal-width' ]"
-        label="Healed percentages"
-        :selections="ticker_selections"
-        :value="tickers_healer_pct"
-        @input="updateTickerOption('tickers_healer_pct', $event)" />
-      <checkbox
-        label="Yield space of main ticker for subtickers"
-        v-model="yield_for_subtickers" />
+      <radio-button :class="['equal-width']" label="Critical hits" :selections="ticker_selections"
+        :value="tickers_dps_crit" @input="updateTickerOption('tickers_dps_crit', $event)" />
+      <radio-button :class="['equal-width']" label="Healed percentages" :selections="ticker_selections"
+        :value="tickers_healer_pct" @input="updateTickerOption('tickers_healer_pct', $event)" />
+      <checkbox label="Yield space of main ticker for subtickers" v-model="yield_for_subtickers" />
     </group>
   </div>
 </template>
@@ -230,7 +174,7 @@ export default {
       let otherkeys = ['tickers_dps_crit', 'tickers_healer_pct'].filter(_ => _ !== key)
       let before = this[key]
       let conflict = otherkeys.find(_ => this[_] === value)
-      if(conflict) {
+      if (conflict) {
         this[conflict] = before
       }
       this[key] = value
@@ -249,16 +193,17 @@ export default {
       'hide_job_icon',
       'list_order',
       'list_align',
-      'reduced'
+      'reduced',
+      'maxCombatants'
     ]),
     shortenized_name() {
-      if(this.cell_display2) {
+      if (this.cell_display2) {
         return '1234'
-      } else if(this.hide_name) {
+      } else if (this.hide_name) {
         return ''
       } else {
         return [
-          this.hide_job_icon? 'Yoshi\'p Sampo' : 'Yoshi\'p Sa…',
+          this.hide_job_icon ? 'Yoshi\'p Sampo' : 'Yoshi\'p Sa…',
           'Yoshi\'p S.',
           'Y. Sampo',
           'Y. S.',
@@ -272,7 +217,7 @@ export default {
       ]
     },
     yielded() {
-      if(!this.yield_for_subtickers)
+      if (!this.yield_for_subtickers)
         return {}
 
       return {

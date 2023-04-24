@@ -3,24 +3,27 @@
 
 name: Build and Publish
 
-inputs:
-  name:
-    description: 'Artifact name'
-    required: false
-    default: 'github-pages'
-  path:
-    description: "Path of the directory containing the static assets."
-    required: true
-    default: "dist/"
-  retention-days:
-    description: "Duration after which artifact will expire in days."
-    required: false
-    default: "1"
+# inputs:
+#   name:
+#     description: 'Artifact name'
+#     required: false
+#     default: 'github-pages'
+#   path:
+#     description: "Path of the directory containing the static assets."
+#     required: true
+#     default: "dist/"
+#   retention-days:
+#     description: "Duration after which artifact will expire in days."
+#     required: false
+#     default: "1"
 
 on:
+ # Runs on creation of release
   release:
     types: [created]
 
+# Allows you to run this workflow manually from the Actions tab
+workflow_dispatch:
 
 jobs:
   build:
@@ -30,7 +33,8 @@ jobs:
         node-version: [18.x]
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -44,30 +48,27 @@ jobs:
         export NODE_ENV=production
         npx webpack
 
-    - name: Archive artifact
-      shell: sh
-      if: runner.os == 'Linux'
-      run: |
-        chmod -c -R +rX "$INPUT_PATH" | while read line; do
-          echo "::warning title=Invalid file permissions automatically fixed::$line"
-        done
-        tar \
-          --dereference --hard-dereference \
-          --directory "$INPUT_PATH" \
-          -cvf "$RUNNER_TEMP/artifact.tar" \
-          --exclude=.git \
-          --exclude=.github \
-          .
-      env:
-        INPUT_PATH: ${{ inputs.path }}
+    # - name: Archive artifact
+    #   shell: sh
+    #   if: runner.os == 'Linux'
+    #   run: |
+    #     chmod -c -R +rX "$INPUT_PATH" | while read line; do
+    #       echo "::warning title=Invalid file permissions automatically fixed::$line"
+    #     done
+    #     tar \
+    #       --dereference --hard-dereference \
+    #       --directory "$INPUT_PATH" \
+    #       -cvf "$RUNNER_TEMP/artifact.tar" \
+    #       --exclude=.git \
+    #       --exclude=.github \
+    #       .
+    #   env:
+    #     INPUT_PATH: ${{ inputs.path }}
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v1
       with:
-        name: ${{ inputs.name }}
-        path: ${{ runner.temp }}/artifact.tar
-        retention-days: ${{ inputs.retention-days }}
-        if-no-files-found: error
+        path: ./dist
 
   # Deploy job
   deploy:

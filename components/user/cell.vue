@@ -4,13 +4,13 @@
     'class-' + combatant.job, {
       self: combatant.name == 'YOU' && highlight_self
     }]">
-    <div class="user-cell-wrap">
+    <div class="user-cell-wrap highlight">
       <label class="name-row" @click="toggleBlur">
-        <i :class="[ 'icon', 'class-' + combatant.job ]"></i>
+        <i :class="['icon', 'class-' + combatant.job]"></i>
         <span class="name">{{ combatant.name | name(shorten_name) }}</span>
       </label>
       <var class="values">
-        <span :class="[ 'l', { zero: combatant[cell_display1] < 0.02 } ]">
+        <span :class="['l', { zero: combatant[cell_display1] < 0.02 }]">
           {{ v(cell_display1, show_decimals) }}
         </span>
         <span class="r" v-if="cell_display2">
@@ -18,17 +18,9 @@
         </span>
       </var>
       <div class="tickers">
-        <graph
-          type="dps-crit"
-          v-if="tickers_dps_crit"
-          :class="tickers_dps_crit"
-          :combatant="combatant" />
-        <graph
-          type="healer-pct"
-          v-if="tickers_healer_pct && show_healer_graph"
-          :class="tickers_healer_pct"
-          :style="{ width: Math.min(100, combatant.hps / (tophps || 1) * 100) + '%' }"
-          :combatant="combatant" />
+        <graph type="dps-crit" v-if="tickers_dps_crit" :class="tickers_dps_crit" :combatant="combatant" />
+        <graph type="healer-pct" v-if="tickers_healer_pct && show_healer_graph" :class="tickers_healer_pct"
+          :style="{ width: Math.min(100, combatant.hps / (tophps || 1) * 100) + '%' }" :combatant="combatant" />
         <span class="ticker main" :style="{
           width: Math.min(100, combatant.dps / (topdps || 1) * 100) + '%'
         }"></span>
@@ -59,7 +51,7 @@ export default {
     v(key, show_decimals) {
       let value = this.combatant[key]
 
-      switch(key) {
+      switch (key) {
         case 'dps':
         case 'dps1m':
         case 'hps':
@@ -97,10 +89,10 @@ export default {
     name(value, type) {
       let name = value.split(' ')
       let flag = +type
-      if(name !== 'YOU' && name.length >= 2) {
-        if((flag & 2) && typeof name[0] === 'string') // Firstname
+      if (name !== 'YOU' && name.length >= 2) {
+        if ((flag & 2) && typeof name[0] === 'string') // Firstname
           name[0] = name[0][0] + '.'
-        if((flag & 1) && typeof name[1] === 'string') // Lastname
+        if ((flag & 1) && typeof name[1] === 'string') // Lastname
           name[1] = name[1][0] + '.'
       }
       return name.join(' ')
@@ -143,7 +135,7 @@ export default {
     @include if-enabled('singleline', 'hide-name')
       flex-direction: row
       max-height: $cell-line-height
-
+  
     &:hover ~ .c-details
       opacity: 1
 
@@ -255,6 +247,7 @@ export default {
         @include if-enabled('force-singleline-allowed')
           margin-left: 0.25rem
 
+    
   .c-details
     position: absolute
     top: $cell-line-height * 2 + 0.25rem
@@ -283,6 +276,8 @@ export default {
 
     height: $cell-line-height
     z-index: -1
+
+    transform: skew(-30deg)
 
     background-color: $cell-background
 

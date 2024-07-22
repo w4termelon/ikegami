@@ -3,6 +3,10 @@
 
 <img src="_readme/title.png?raw=true" width="640" __ />
 
+## Changes
+- Default limit to 8 players
+- changed design from rectangle to parallelogram
+
 ## Example
 
  In 8-player duty:

@@ -1,6 +1,6 @@
 {
   "name": "ikegami",
-  "version": "0.3.5",
+  "version": "0.3.5.1",
   "releasename": "Daikan-yama",
   "description": "experimental horizontal FFXIV Miniparse overlay",
   "type": "module",
@@ -12,12 +12,10 @@
   "devDependencies": {
     "@vitejs/plugin-vue2": "^2.3.1",
     "sass": "^1.26.10",
-    "vite": "^5.3.2",
+    "vite": "^5.3.4",
     "vite-plugin-compression2": "^1.1.2"
   },
   "scripts": {
-    "dev": "NODE_ENV=development webpack-dev-server --host=0.0.0.0 --port=9000 --disable-host-check",
-    "devWin": "set NODE_ENV=development&&set NODE_OPTIONS=--openssl-legacy-provider&&webpack-dev-server --host=0.0.0.0 --port=9000 --disable-host-check",
-    "prod": "NODE_ENV=production && NODE_OPTIONS=--openssl-legacy-provider && npx webpack -p --env NODE_ENV=production"
+    "dev": "vite"
   }
 }

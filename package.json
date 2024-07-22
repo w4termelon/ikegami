@@ -1,6 +1,6 @@
 {
   "name": "ikegami",
-  "version": "0.3.5.1",
+  "version": "0.3.5",
   "releasename": "Daikan-yama",
   "description": "experimental horizontal FFXIV Miniparse overlay",
   "type": "module",
